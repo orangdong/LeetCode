@@ -10,51 +10,24 @@ class Solution:
         tail = sums
         temp = 0
         
-        while l1 and l2:
-            add = l1.val + l2.val + temp
+        while l1 or l2 or temp:
+            l1val = l1.val if l1 else 0
+            l2val = l2.val if l2 else 0
+            add = l1val + l2val + temp
             temp = 0
             if(add > 9):
-                num_str = str(add)
-                temp = int(num_str[0])
-                l1.val = num_str[1]
+                digit = str(add)
+                temp = int(digit[0])
+                newNode = ListNode(int(digit[1]))
+                tail.next = newNode
             else:
-                l1.val = add
-            tail.next = l1
-            l1 = l1.next
-            l2 = l2.next
+                newNode = ListNode(add)
+                tail.next = newNode
             tail = tail.next
+            l1 = l1.next if l1 else None
+            l2 = l2.next if l2 else None
+                
         
-        if(l1):
-            while l1:
-                add = l1.val + temp
-                temp = 0
-                if(add > 9):
-                    num_str = str(add)
-                    temp = int(num_str[0])
-                    l1.val = num_str[1]
-                else:
-                    l1.val = add
-                tail.next = l1
-                l1 = l1.next
-                tail = tail.next
-        elif(l2):
-            while l2:
-                add = l2.val + temp
-                temp = 0
-                if(add > 9):
-                    num_str = str(add)
-                    temp = int(num_str[0])
-                    l2.val = num_str[1]
-                else:
-                    l2.val = add
-                tail.next = l2
-                l2 = l2.next
-                tail = tail.next
-        
-        if(temp):
-            tail.next = ListNode(val=temp)
-        
-        print(sums)
         return sums.next
                 
                 
