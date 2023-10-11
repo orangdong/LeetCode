@@ -22,28 +22,40 @@ class Solution:
         
 #         return node.next
     def mergeKLists(self, lists: List[Optional[ListNode]]) -> Optional[ListNode]:
-        store = {}
-        for lst in lists:
-            start = lst
-            while start:
-                curr = start
-                while curr.next and curr.next.val == start.val:
-                        curr = curr.next
-                try:
-                    sect_head, sect_tail = store[start.val]
-                except KeyError:
-                    store[start.val] = [start, curr]
-                else:
-                    sect_tail.next = start
-                    store[start.val][1] = curr
-                start = curr.next
-        tail = None
-        head = None
-        for key in sorted(store.keys()):
-            front = store[key][0]
-            if not tail:
-                head = front
+        if not lists or len(lists) < 1:
+            return None
+        
+        while len(lists) > 1:
+            mergedList = []
+            
+            for i in range(0, len(lists), 2):
+                list1 = lists[i]
+                list2 = lists[i + 1] if (i + 1) < len(lists) else None
+                mergedList.append(self.mergeList(list1, list2))
+            lists = mergedList
+        return lists[0]
+            
+        
+    def mergeList(self, l1, l2):
+        node = ListNode()
+        tail = node
+        
+        
+        while l1 and l2:
+            if l1.val < l2.val:
+                tail.next = l1
+                l1 = l1.next
             else:
-                tail.next = front
-            tail = store[key][1]
-        return head
+                tail.next = l2
+                l2 = l2.next
+            tail = tail.next
+        
+        if l1:
+            tail.next = l1
+        elif l2:
+            tail.next = l2
+        
+        return node.next
+            
+                
+            
